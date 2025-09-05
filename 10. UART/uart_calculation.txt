@@ -1,0 +1,28 @@
+	/*
+	Calculating Baud Rate
+		Buad Rate = PCLK / (16*( (256 * DLM) + DLL)) * (1 + DivAddVal/MulVal))
+	
+		CCLk = 4MHz
+		PCLK = CCLK/4 = 1 MHz	
+		PCLK = 1MHz
+		Desired Baud rate  = 9600
+		DivAddVal = 1
+		MulVal = 12
+
+		DLL and DLM = ?
+
+		((256*DLM) + DLL)	= PCLK / 16 * (Baud Rate	* (1+ DivAddVal/MulVal))
+
+		((256*DLM) + DLL) = 6
+		if	DLM = 0
+		DLL = 6
+		
+		So if we set 
+		DLL = 6
+		DLM = 0
+		DivAddVal = 1
+		MulVal = 12
+
+		We will achieve the desired baud rate of 9600
+
+	*/

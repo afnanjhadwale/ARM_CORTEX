@@ -1,0 +1,26 @@
+#include"uart0_header.h"
+#include"lcd_header.h"
+#include<string.h>
+#include<stdio.h>
+int main()
+{
+	char alpha;
+	char send[20];
+	char recv[20];
+	uart0_init();
+	lcd_init();
+	while(1)
+	{	 
+		lcd_cmd_write(0x80);	
+		alpha = uart0_ch_recieve();
+		sprintf(recv,"Recv Char: %c",alpha);
+		lcd_str_write(recv);
+		delay_ms(500);
+		lcd_cmd_write(0xC0);
+		uart0_ch_transmit(alpha+1);
+		sprintf(send,"Sent Char: %c",alpha+1);
+		lcd_str_write(send);
+		delay_ms(500);
+		//lcd_cmd_write(0x01);
+	}
+}	

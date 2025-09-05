@@ -1,0 +1,37 @@
+#include<LPC17xx.h>
+#include<stdint.h>
+
+#define UART  	((1<<4) | (1<<6))	
+#define UART0    LPC_UART0
+
+
+int main()
+{
+
+	LPC_SC->PCONP |=  (1<<3);			//turn on UART
+	LPC_SC->PCLKSEL0 &= ~(0x03 <<6);	//pclk = cllk/4
+
+	LPC_PINCON->PINSEL0 |= UART;		//P0.2 as TXD0 and P0.3 as RXD0
+
+	UART0->LCR |= (1<<7);
+	UART0->DLL = 6;
+	UART0->DLM = 0;
+	UART0->FDR |= (0x0C << 4) | (0x01);
+
+	UART0->LCR &= ~(1<<7);
+
+	UART0->LCR |= (0x03); //data length = 8bit
+	UART0->LCR &= ~(1<<2);	//stop bit = 1bit
+	UART0->LCR &= ~(1<<3); //no parity
+
+
+	UART0->THR	= 'a';
+	while((UART0->LSR & (1<<5)) == 0);
+	UART0->THR	= 'b';
+	while((UART0->LSR & (1<<5)) == 0);
+	UART0->THR	= 'c';
+	while((UART0->LSR & (1<<5)) == 0);
+
+	while(1);
+
+}
